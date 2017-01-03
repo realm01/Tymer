@@ -4,7 +4,6 @@ from time import sleep
 class interval(TymerBase):
     def __init__(self, wait):
         self.wait = wait
-        self.is_running = True
 
     def __call__(self, *args, **kwargs):
         try:
@@ -30,6 +29,3 @@ class interval(TymerBase):
             return self
         else:
             return self.local_task(*args, **kwargs)
-
-    def stop(self):
-        self.is_running = False
