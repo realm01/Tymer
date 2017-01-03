@@ -1,31 +1,15 @@
-from .tymer_base import TymerBase
+from .tymer_base import WaitTask
 from time import sleep
 
-class interval(TymerBase):
-    def __init__(self, wait):
-        self.wait = wait
+class interval(WaitTask):
+    def task_interval_wrapper(self, *args, **kwargs):
+        while(True):
+            self.local_task(*args, **kwargs)
+            sleep(self.wait)
 
-    def __call__(self, *args, **kwargs):
-        try:
-            tmp = self.task
-        except:
-            task_not_defined = True
-        else:
-            task_not_defined = False
+            if not self.is_running:
+                break
 
-        if len(args) == 1 and callable(args[0]) and task_not_defined:
-            self.local_task = args[0]
-
-            def task_interval_wrapper(*args, **kwargs):
-                while(True):
-                    self.local_task(*args, **kwargs)
-                    sleep(self.wait)
-
-                    if not self.is_running:
-                        break
-
-            super().__init__(task_interval_wrapper)
-
-            return self
-        else:
-            return self.local_task(*args, **kwargs)
+class timeout(WaitTask):
+    def task_interval_wrapper(self, *args, **kwargs):
+        pass
