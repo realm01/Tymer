@@ -12,4 +12,5 @@ class interval(WaitTask):
 
 class timeout(WaitTask):
     def task_interval_wrapper(self, *args, **kwargs):
-        pass
+        sleep(self.wait)
+        self.local_task(*args, **kwargs)
