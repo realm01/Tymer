@@ -1,4 +1,4 @@
-from TymerBase import TymerBase
+from .tymer_base import TymerBase
 from time import sleep
 
 class interval(TymerBase):
@@ -8,7 +8,8 @@ class interval(TymerBase):
 
     def __call__(self, *args, **kwargs):
         # TODO: Check if self.task is already defined
-        if len(args) == 1 and callable(args[0]):
+        # TODO: fix one time execution
+        if len(args) == 1 and callable(args[0]) and args[0]:
             self.local_task = args[0]
 
             def task_interval_wrapper(*args, **kwargs):
