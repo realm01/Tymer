@@ -7,9 +7,14 @@ class interval(TymerBase):
         self.is_running = True
 
     def __call__(self, *args, **kwargs):
-        # TODO: Check if self.task is already defined
-        # TODO: fix one time execution
-        if len(args) == 1 and callable(args[0]) and args[0]:
+        try:
+            tmp = self.task
+        except:
+            task_not_defined = True
+        else:
+            task_not_defined = False
+
+        if len(args) == 1 and callable(args[0]) and task_not_defined:
             self.local_task = args[0]
 
             def task_interval_wrapper(*args, **kwargs):
@@ -24,7 +29,7 @@ class interval(TymerBase):
 
             return self
         else:
-            return self.task(*args, **kwargs)
+            return self.local_task(*args, **kwargs)
 
     def stop(self):
         self.is_running = False
